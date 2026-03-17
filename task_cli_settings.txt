@@ -1,0 +1,2 @@
+# Modificar esse arquivo pode mudar o funcionamento do programa
+task_list_cli.json
