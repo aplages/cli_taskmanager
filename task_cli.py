@@ -1,5 +1,5 @@
 import json
-#import argparse
+import argparse
 
 # ideia: usar um arquivo local para salvar o nome do arquivo anteriormente usado pelo usuario
 
@@ -75,7 +75,15 @@ def list(file_name=''):
     with open(file_name, 'r') as file:
         for linha in file.readlines():
             json_line = json.loads(linha)
-            print(f'ID: {json_line['id']}       Task: {json_line['description']}       Status: {json_line['status']}\n')
+
+            if json_line['status'] == 'to-do':
+                print(f'ID: {json_line['id']}       Task: {json_line['description']}       Status: \033[31m{json_line['status']}\033[m\n')
+            elif json_line['status'] == 'in-progress':
+                print(f'ID: {json_line['id']}       Task: {json_line['description']}       Status: \033[33m{json_line['status']}\033[m\n')
+            elif json_line['status'] == 'done':
+                print(f'ID: {json_line['id']}       Task: {json_line['description']}       Status: \033[32m{json_line['status']}\033[m\n')
+
+            #print(f'ID: {json_line['id']}       Task: {json_line['description']}       Status: {json_line['status']}\n')
 
 
 def update(id, state='', file_name=''):
@@ -143,3 +151,38 @@ def delete(id, file_name=''):
         for task in tasklist:
             task_json = json.dumps(task)
             file.write(f'{task_json}\n')
+
+
+parser = argparse.ArgumentParser()
+
+group = parser.add_mutually_exclusive_group()
+
+group.add_argument('-add', help='adds to the list')
+group.add_argument('-delete', help='deletes to the list', type=int)
+group.add_argument('-update', help='updates the task progress', type=int)
+group.add_argument('-list', help='shows the tasklist', action='store_true')
+
+#parser.add_argument('-echo', help='print o q vc botar aq')
+
+
+
+args = parser.parse_args()
+
+
+#print(args.echo)
+print(args)
+
+
+
+if args.add != None:
+    print(f'adicionando {args.add} na tasklist...')
+    add(args.add)
+elif args.delete != None:
+    print(f'deletando {args.delete} na tasklist...')
+    delete(args.delete)
+elif args.update != None:
+    print(f'atualizando progresso de {args.update} na tasklist...')
+    update(args.update)
+elif args.list:
+    print('mostrando tasklist...')
+    list()
