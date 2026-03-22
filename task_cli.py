@@ -66,22 +66,47 @@ def write(task_dict, first=False, file_name=''):
         file.write(f'{task_json}\n')
 
 
-def list(file_name=''):
+def list(file_name='', task_status=''):
+
     if file_name == '':
         file_name = getFileName()
     else:
         setFileName(file_name)
 
     with open(file_name, 'r') as file:
-        for linha in file.readlines():
-            json_line = json.loads(linha)
+        if task_status == '':
+            for linha in file.readlines():
+                json_line = json.loads(linha)
 
-            if json_line['status'] == 'to-do':
-                print(f'ID: {json_line['id']}       Task: {json_line['description']}       Status: \033[31m{json_line['status']}\033[m\n')
-            elif json_line['status'] == 'in-progress':
-                print(f'ID: {json_line['id']}       Task: {json_line['description']}       Status: \033[33m{json_line['status']}\033[m\n')
-            elif json_line['status'] == 'done':
-                print(f'ID: {json_line['id']}       Task: {json_line['description']}       Status: \033[32m{json_line['status']}\033[m\n')
+                
+                if json_line['status'] == 'to-do':
+                    print(f'ID: {json_line['id']}       Task: {json_line['description']}       Status: \033[31m{json_line['status']}\033[m\n')
+                elif json_line['status'] == 'in-progress':
+                    print(f'ID: {json_line['id']}       Task: {json_line['description']}       Status: \033[33m{json_line['status']}\033[m\n')
+                elif json_line['status'] == 'done':
+                    print(f'ID: {json_line['id']}       Task: {json_line['description']}       Status: \033[32m{json_line['status']}\033[m\n')
+            
+        elif task_status=='to-do':
+            for linha in file.readlines():
+                json_line = json.loads(linha)
+
+                if json_line['status'] == 'to-do':
+                    print(f'ID: {json_line['id']}       Task: {json_line['description']}       Status: \033[31m{json_line['status']}\033[m\n')
+
+        elif task_status=='in-progress':
+            for linha in file.readlines():
+                json_line = json.loads(linha)
+
+                if json_line['status'] == 'in-progress':
+                    print(f'ID: {json_line['id']}       Task: {json_line['description']}       Status: \033[33m{json_line['status']}\033[m\n')
+
+        elif task_status=='done':            
+            for linha in file.readlines():
+                json_line = json.loads(linha)
+
+                if json_line['status'] == 'done':
+                    print(f'ID: {json_line['id']}       Task: {json_line['description']}       Status: \033[32m{json_line['status']}\033[m\n')
+
 
             #print(f'ID: {json_line['id']}       Task: {json_line['description']}       Status: {json_line['status']}\n')
 
@@ -170,7 +195,7 @@ args = parser.parse_args()
 
 
 #print(args.echo)
-print(args)
+#print(args)
 
 
 
