@@ -36,14 +36,29 @@ def getID(file_name=''):
 
     with open(file_name, 'r') as file:
         linhas = file.readlines()
-        if (linhas != None) and (linhas != ''):
+        #print(linhas)
+        if (linhas != None) and (linhas != '') and (linhas != []):
             id_number = json.loads(linhas[::-1][0])['id']
             return id_number
         else:
-            return 1
+            return 0
 
 
-def add(description, id=getID()+1, status='to-do', createdAt='', updatedAt=''):
+def add(description_list: list, id=None, status='to-do', createdAt='', updatedAt=''):
+
+    description = ''
+    space = False
+    for w in description_list:
+        if not space:
+            description += str(w)
+            space = True
+        else:
+            description += f' {w}'
+
+
+    id = int(getID()+1)
+
+    print(f'Adding <\033[36m{description}\033[m - ID: \033[36m{id}\033[m> to tasklist')
     task = {
         'id': id,
         'description': description,
@@ -75,6 +90,7 @@ def list(file_name='', task_status=''):
 
     with open(file_name, 'r') as file:
         if task_status == '':
+            print(f'Listing tasks:\n')
             for linha in file.readlines():
                 json_line = json.loads(linha)
 
@@ -87,6 +103,7 @@ def list(file_name='', task_status=''):
                     print(f'ID: {json_line['id']}       Task: {json_line['description']}       Status: \033[32m{json_line['status']}\033[m\n')
             
         elif task_status=='to-do':
+            print(f'Listing \033[31mto-do\033[m tasks:\n')
             for linha in file.readlines():
                 json_line = json.loads(linha)
 
@@ -94,13 +111,15 @@ def list(file_name='', task_status=''):
                     print(f'ID: {json_line['id']}       Task: {json_line['description']}       Status: \033[31m{json_line['status']}\033[m\n')
 
         elif task_status=='in-progress':
+            print(f'Listing \033[33min-progress\033[m tasks:\n')
             for linha in file.readlines():
                 json_line = json.loads(linha)
 
                 if json_line['status'] == 'in-progress':
                     print(f'ID: {json_line['id']}       Task: {json_line['description']}       Status: \033[33m{json_line['status']}\033[m\n')
 
-        elif task_status=='done':            
+        elif task_status=='done':
+            print(f'Listing \033[32mdone\033[m tasks:\n')
             for linha in file.readlines():
                 json_line = json.loads(linha)
 
@@ -117,12 +136,13 @@ def update(id, state='', file_name=''):
     else:
         setFileName(file_name)
 
+    updata = False
     with open(file_name, 'r') as file:
         tasklist = []
         for linha in file.readlines():
             tasklist.append(json.loads(linha))
         
-        if len(tasklist) > 0:
+        if (len(tasklist) > 0) and (len(tasklist) >= id > 0):
             for task in tasklist:
                 #print(task['id'])
                 if task['id'] == id:
@@ -131,20 +151,36 @@ def update(id, state='', file_name=''):
                     if state == '':
                         if (task['status'] == 'to-do'):
                             task['status'] = 'in-progress'
+                            print(f'Updating <ID: \033[36m{id}\033[m : \033[36m{task['description']}\033[m> --> \033[33min-progress\033[m')
+
                         elif task['status'] == 'in-progress':
                             task['status'] = 'done'
+                            print(f'Updating <ID: \033[36m{id}\033[m : \033[36m{task['description']}\033[m> --> \033[32mdone\033[m')
+
                     elif state == 'to-do':
                         task['status'] = 'to-do'
+                        print(f'Updating <ID: \033[36m{id}\033[m : \033[36m{task['description']}\033[m> --> \033[31mto-do\033[m')
+
                     elif state == 'done':
                         task['status'] = 'done'
+                        print(f'Updating <ID: \033[36m{id}\033[m : \033[36m{task['description']}\033[m> --> \033[32mdone\033[m')
+
                     elif state == 'in-progress':
                         task['status'] = 'in-progress'
+                        print(f'Updating <ID: \033[36m{id}\033[m : \033[36m{task['description']}\033[m> --> \033[33min-progress\033[m')
+
+                    updata = True
                     break
 
-    with open(file_name, 'w') as file:
-        for task in tasklist:
-            task_json = json.dumps(task)
-            file.write(f'{task_json}\n')
+        elif not (len(tasklist) >= id > 0):
+            print('ID não existe.')
+        elif not (len(tasklist) > 0):
+            print('Tasklist vazia.')
+    if updata:
+        with open(file_name, 'w') as file:
+            for task in tasklist:
+                task_json = json.dumps(task)
+                file.write(f'{task_json}\n')
 
 
 def delete(id, file_name=''):
@@ -153,61 +189,124 @@ def delete(id, file_name=''):
     else:
         setFileName(file_name)
 
+    deleta = False
+
     with open(file_name, 'r') as file:
         tasklist = []
         for linha in file.readlines():
             tasklist.append(json.loads(linha))
         
 
-        if len(tasklist) > 0 :
+        if (len(tasklist) > 0) and (len(tasklist) >= id > 0):
             for n in range(len(tasklist)):
                 if tasklist[n]['id'] == id:
                     #print(tasklist[n]['id'])
                     ind = n
                     #print(ind) --> o índice será (ID - 1)
+                    print(f'Deleting <ID: \033[36m{id}\033[m : \033[36m{tasklist[n]['description']}\033[m> from tasklist')
                     tasklist.remove(tasklist[n])
+                    deleta = True
                     break
+        elif not (len(tasklist) >= id > 0):
+            print('ID não existe.')
+        elif not (len(tasklist) > 0):
+            print('Tasklist vazia.')
             
             for task in tasklist:
                 if task['id'] > ind:
                     task['id'] -= 1
-
-    with open(file_name, 'w') as file:
+    if deleta:
+        
         for task in tasklist:
-            task_json = json.dumps(task)
-            file.write(f'{task_json}\n')
+            if task['id'] >= id:
+                task['id'] -= 1
+
+        with open(file_name, 'w') as file:
+            for task in tasklist:
+                task_json = json.dumps(task)
+                file.write(f'{task_json}\n')
+        
 
 
-parser = argparse.ArgumentParser()
+## Program:
 
-group = parser.add_mutually_exclusive_group()
+parser = argparse.ArgumentParser(description='A taskmanager program via CLI')
 
-group.add_argument('-add', help='adds to the list')
-group.add_argument('-delete', help='deletes to the list', type=int)
-group.add_argument('-update', help='updates the task progress', type=int)
-group.add_argument('-list', help='shows the tasklist', action='store_true')
+subparsers = parser.add_subparsers(dest='command', required=True, help='Available arguments')
 
-#parser.add_argument('-echo', help='print o q vc botar aq')
+##
 
+parser_add = subparsers.add_parser('add', help='adds to the list')
+parser_add.add_argument('task_description', help='The task needs a name/description', nargs='*')
+
+##
+
+parser_delete = subparsers.add_parser('delete', help='deletes given ID from the tasklist')
+parser_delete.add_argument('id', help='The ID from the task you wish to delete', type=int)
+
+
+##
+
+parser_update = subparsers.add_parser('update', help="updates the the given ID task's progress")
+parser_update.add_argument('id', help='The ID from the task you wish to update', type=int)
+
+update_group = parser_update.add_mutually_exclusive_group()
+update_group.add_argument('-todo', '-td', action='store_true')
+update_group.add_argument('-inprogress', '-inp', action='store_true')
+update_group.add_argument('-done', action='store_true')
+
+##
+
+parser_list = subparsers.add_parser('list', help='shows the tasklist')
+list_group = parser_list.add_mutually_exclusive_group()
+
+list_group.add_argument('-todo', '-td', action='store_true', help='Shows the tasks that are in a \033[31m<to-do>\033[m status')
+list_group.add_argument('-inprogress', '-inp', action='store_true', help='Shows the tasks that are in a \033[33m<in-progress>\033[m status')
+list_group.add_argument('-done', action='store_true', help='Shows the tasks that are in a \033[32m<done>\033[m status')
+
+##
 
 
 args = parser.parse_args()
 
-
-#print(args.echo)
+print()
 #print(args)
 
+#print(args.command)
+#print()
 
 
-if args.add != None:
-    print(f'adicionando {args.add} na tasklist...')
-    add(args.add)
-elif args.delete != None:
-    print(f'deletando {args.delete} na tasklist...')
-    delete(args.delete)
-elif args.update != None:
-    print(f'atualizando progresso de {args.update} na tasklist...')
-    update(args.update)
-elif args.list:
-    print('mostrando tasklist...')
-    list()
+if args.command == 'add':
+    add(args.task_description)
+
+elif args.command == 'delete':
+    delete(args.id)
+
+
+elif args.command == 'update':
+    if args.todo:
+        update(args.id, state='to-do')
+
+    elif args.inprogress:
+        update(args.id, state='in-progress')
+
+    elif args.done:
+        update(args.id, state='done')
+
+    else:
+        update(args.id)
+
+elif args.command == 'list':
+    if args.todo:
+        list(task_status='to-do')
+
+    elif args.inprogress:
+        list(task_status='in-progress')
+
+    elif args.done:
+        list(task_status='done')
+
+    else:
+        list()
+
+print()
