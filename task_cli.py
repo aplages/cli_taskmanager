@@ -1,5 +1,6 @@
 import json
 import argparse
+from datetime import datetime
 
 # ideia: usar um arquivo local para salvar o nome do arquivo anteriormente usado pelo usuario
 
@@ -44,7 +45,7 @@ def getID(file_name=''):
             return 0
 
 
-def add(description_list: list, id=None, status='to-do', createdAt='', updatedAt=''):
+def add(description_list: list): # status='to-do', id=None):
 
     description = ''
     space = False
@@ -55,14 +56,16 @@ def add(description_list: list, id=None, status='to-do', createdAt='', updatedAt
         else:
             description += f' {w}'
 
-
+    #if id == None:     --> caso eu queira dar opcao de escolher o ID...
     id = int(getID()+1)
+    createdAt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    updatedAt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     print(f'Adding <\033[36m{description}\033[m - ID: \033[36m{id}\033[m> to tasklist')
     task = {
         'id': id,
         'description': description,
-        'status': status,
+        'status': 'to-do',
         'createdAt': createdAt,
         'updatedAt': updatedAt
     }
@@ -152,24 +155,33 @@ def update(id, state='', file_name=''):
                         if (task['status'] == 'to-do'):
                             task['status'] = 'in-progress'
                             print(f'Updating <ID: \033[36m{id}\033[m : \033[36m{task['description']}\033[m> --> \033[33min-progress\033[m')
+                            task['updatedAt'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
                         elif task['status'] == 'in-progress':
                             task['status'] = 'done'
                             print(f'Updating <ID: \033[36m{id}\033[m : \033[36m{task['description']}\033[m> --> \033[32mdone\033[m')
+                            task['updatedAt'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                        
+                        elif task['status'] == 'done':
+                            print('Task already \033[32mdone\033[m')
 
                     elif state == 'to-do':
                         task['status'] = 'to-do'
                         print(f'Updating <ID: \033[36m{id}\033[m : \033[36m{task['description']}\033[m> --> \033[31mto-do\033[m')
+                        task['updatedAt'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
                     elif state == 'done':
                         task['status'] = 'done'
                         print(f'Updating <ID: \033[36m{id}\033[m : \033[36m{task['description']}\033[m> --> \033[32mdone\033[m')
+                        task['updatedAt'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
                     elif state == 'in-progress':
                         task['status'] = 'in-progress'
                         print(f'Updating <ID: \033[36m{id}\033[m : \033[36m{task['description']}\033[m> --> \033[33min-progress\033[m')
+                        task['updatedAt'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
                     updata = True
+                    
                     break
 
         elif not (len(tasklist) >= id > 0):

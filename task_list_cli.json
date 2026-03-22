@@ -1,16 +1,17 @@
-{"id": 1, "description": "teste_A", "status": "to-do", "createdAt": "", "updatedAt": ""}
-{"id": 2, "description": "teste_B", "status": "to-do", "createdAt": "", "updatedAt": ""}
-{"id": 3, "description": "teste_C", "status": "in-progress", "createdAt": "", "updatedAt": ""}
-{"id": 4, "description": "teste_D", "status": "to-do", "createdAt": "", "updatedAt": ""}
-{"id": 5, "description": "teste_E", "status": "done", "createdAt": "", "updatedAt": ""}
-{"id": 6, "description": "teste_F", "status": "to-do", "createdAt": "", "updatedAt": ""}
-{"id": 7, "description": "teste_G", "status": "to-do", "createdAt": "", "updatedAt": ""}
-{"id": 8, "description": "teste_H", "status": "done", "createdAt": "", "updatedAt": ""}
-{"id": 9, "description": "teste_I", "status": "in-progress", "createdAt": "", "updatedAt": ""}
-{"id": 10, "description": "teste_J", "status": "to-do", "createdAt": "", "updatedAt": ""}
-{"id": 11, "description": "teste_cli", "status": "to-do", "createdAt": "", "updatedAt": ""}
-{"id": 12, "description": "mineiro", "status": "done", "createdAt": "", "updatedAt": ""}
-{"id": 13, "description": "teste_13", "status": "in-progress", "createdAt": "", "updatedAt": ""}
-{"id": 14, "description": "teste_14", "status": "done", "createdAt": "", "updatedAt": ""}
-{"id": 15, "description": "Teste_Final_quemsabe", "status": "done", "createdAt": "", "updatedAt": ""}
-{"id": 16, "description": "teste teste", "status": "to-do", "createdAt": "", "updatedAt": ""}
+{"id": 1, "description": "teste_A", "status": "to-do", "createdAt": "", "updatedAt": "2026-03-21 23:38:27"}
+{"id": 2, "description": "teste_B", "status": "done", "createdAt": "", "updatedAt": "2026-03-21 23:34:45"}
+{"id": 3, "description": "teste_C", "status": "done", "createdAt": "", "updatedAt": "2026-03-21 23:34:46"}
+{"id": 4, "description": "teste_D", "status": "in-progress", "createdAt": "", "updatedAt": "2026-03-21 23:33:57"}
+{"id": 5, "description": "teste_E", "status": "done", "createdAt": "", "updatedAt": "2026-03-21 23:34:01"}
+{"id": 6, "description": "teste_F", "status": "in-progress", "createdAt": "", "updatedAt": "2026-03-21 23:33:59"}
+{"id": 7, "description": "teste_G", "status": "in-progress", "createdAt": "", "updatedAt": "2026-03-21 23:34:00"}
+{"id": 8, "description": "teste_H", "status": "done", "createdAt": "", "updatedAt": "2026-03-21 23:34:03"}
+{"id": 9, "description": "teste_I", "status": "done", "createdAt": "", "updatedAt": "2026-03-21 23:34:04"}
+{"id": 10, "description": "teste_J", "status": "in-progress", "createdAt": "", "updatedAt": "2026-03-21 23:34:06"}
+{"id": 11, "description": "teste_cli", "status": "in-progress", "createdAt": "", "updatedAt": "2026-03-21 23:34:08"}
+{"id": 12, "description": "mineiro", "status": "done", "createdAt": "", "updatedAt": "2026-03-21 23:34:09"}
+{"id": 13, "description": "teste_13", "status": "done", "createdAt": "", "updatedAt": "2026-03-21 23:34:11"}
+{"id": 14, "description": "teste_14", "status": "done", "createdAt": "", "updatedAt": "2026-03-21 23:34:13"}
+{"id": 15, "description": "Teste_Final_quemsabe", "status": "done", "createdAt": "", "updatedAt": "2026-03-21 23:34:14"}
+{"id": 16, "description": "teste teste", "status": "in-progress", "createdAt": "", "updatedAt": "2026-03-21 23:34:15"}
+{"id": 17, "description": "teste com data", "status": "in-progress", "createdAt": "2026-03-21 23:31:46", "updatedAt": "2026-03-21 23:34:17"}
